@@ -24,7 +24,7 @@ import net.runelite.client.util.ImageUtil;
 	description = "Caches the bank"
 )
 @Slf4j
-public class BankCachePlugin extends Plugin
+public class BankValuePlugin extends Plugin
 {
 	@Inject
 	Client client;
@@ -35,15 +35,15 @@ public class BankCachePlugin extends Plugin
 	@Inject
 	ItemManager itemManager;
 
-	private BankCachePanel panel;
+	private BankValuePanel panel;
 	private NavigationButton navButton;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		panel = new BankCachePanel(this);
+		panel = new BankValuePanel(this);
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(BankCachePlugin.class, "panel_icon.png");
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(BankValuePlugin.class, "panel_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Bank Cache")

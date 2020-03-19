@@ -36,7 +36,7 @@ import lombok.Getter;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.QuantityFormatter;
 
-class BankCacheTableRow extends JPanel
+class BankValueTableRow extends JPanel
 {
 	static final int ITEM_NAME_COLUMN_WIDTH = 60;
 	static final int ITEM_COUNT_COLUMN_WIDTH = 45;
@@ -58,7 +58,7 @@ class BankCacheTableRow extends JPanel
 
 	private Color lastBackground;
 
-	BankCacheTableRow(CachedItem item)
+	BankValueTableRow(CachedItem item)
 	{
 		this.item = item;
 
@@ -97,7 +97,7 @@ class BankCacheTableRow extends JPanel
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
-				BankCacheTableRow.this.lastBackground = getBackground();
+				BankValueTableRow.this.lastBackground = getBackground();
 				setBackground(getBackground().brighter());
 			}
 

@@ -40,23 +40,23 @@ import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 
 @Slf4j
-class BankCachePanel extends PluginPanel
+class BankValuePanel extends PluginPanel
 {
 	private static final Color ODD_ROW = new Color(44, 44, 44);
 
 	private final JPanel listContainer = new JPanel();
 
-	private BankCacheTableHeader countHeader;
-	private BankCacheTableHeader valueHeader;
-	private BankCacheTableHeader nameHeader;
+	private BankValueTableHeader countHeader;
+	private BankValueTableHeader valueHeader;
+	private BankValueTableHeader nameHeader;
 
 	private SortOrder orderIndex = SortOrder.VALUE;
 	private boolean ascendingOrder = false;
 
-	private ArrayList<BankCacheTableRow> rows = new ArrayList<>();
-	private BankCachePlugin plugin;
+	private ArrayList<BankValueTableRow> rows = new ArrayList<>();
+	private BankValuePlugin plugin;
 
-	BankCachePanel(BankCachePlugin plugin)
+	BankValuePanel(BankValuePlugin plugin)
 	{
 		this.plugin = plugin;
 
@@ -92,7 +92,7 @@ class BankCachePanel extends PluginPanel
 
 		for (int i = 0; i < rows.size(); i++)
 		{
-			BankCacheTableRow row = rows.get(i);
+			BankValueTableRow row = rows.get(i);
 			row.setBackground(i % 2 == 0 ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
 			listContainer.add(row);
 		}
@@ -147,7 +147,7 @@ class BankCachePanel extends PluginPanel
 		JPanel leftSide = new JPanel(new BorderLayout());
 		JPanel rightSide = new JPanel(new BorderLayout());
 
-		nameHeader = new BankCacheTableHeader("Name", orderIndex == SortOrder.NAME, ascendingOrder);
+		nameHeader = new BankValueTableHeader("Name", orderIndex == SortOrder.NAME, ascendingOrder);
 		nameHeader.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -162,8 +162,8 @@ class BankCachePanel extends PluginPanel
 			}
 		});
 
-		countHeader = new BankCacheTableHeader("#", orderIndex == SortOrder.COUNT, ascendingOrder);
-		countHeader.setPreferredSize(new Dimension(BankCacheTableRow.ITEM_COUNT_COLUMN_WIDTH, 0));
+		countHeader = new BankValueTableHeader("#", orderIndex == SortOrder.COUNT, ascendingOrder);
+		countHeader.setPreferredSize(new Dimension(BankValueTableRow.ITEM_COUNT_COLUMN_WIDTH, 0));
 		countHeader.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -178,8 +178,8 @@ class BankCachePanel extends PluginPanel
 			}
 		});
 
-		valueHeader = new BankCacheTableHeader("$", orderIndex == SortOrder.VALUE, ascendingOrder);
-		valueHeader.setPreferredSize(new Dimension(BankCacheTableRow. ITEM_VALUE_COLUMN_WIDTH, 0));
+		valueHeader = new BankValueTableHeader("$", orderIndex == SortOrder.VALUE, ascendingOrder);
+		valueHeader.setPreferredSize(new Dimension(BankValueTableRow. ITEM_VALUE_COLUMN_WIDTH, 0));
 		valueHeader.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -208,9 +208,9 @@ class BankCachePanel extends PluginPanel
 	/**
 	 * Builds a table row, that displays the bank's information.
 	 */
-	private BankCacheTableRow buildRow(CachedItem item, boolean stripe)
+	private BankValueTableRow buildRow(CachedItem item, boolean stripe)
 	{
-		BankCacheTableRow row = new BankCacheTableRow(item);
+		BankValueTableRow row = new BankValueTableRow(item);
 		row.setBackground(stripe ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
 		return row;
 	}

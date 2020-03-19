@@ -7,7 +7,7 @@ public class BankValuePluginTest
 {
 	public static void main(String[] args) throws Exception
 	{
-		ExternalPluginManager.loadBuiltin(BankCachePlugin.class);
+		ExternalPluginManager.loadBuiltin(BankValuePlugin.class);
 		RuneLite.main(args);
 	}
 }
