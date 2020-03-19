@@ -20,8 +20,8 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Bank Cache",
-	description = "Caches the bank"
+	name = "Bank Value",
+	description = "Shows the value of your bank in the sidebar"
 )
 @Slf4j
 public class BankValuePlugin extends Plugin
@@ -46,7 +46,7 @@ public class BankValuePlugin extends Plugin
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(BankValuePlugin.class, "panel_icon.png");
 
 		navButton = NavigationButton.builder()
-			.tooltip("Bank Cache")
+			.tooltip("Bank Value")
 			.priority(5)
 			.panel(panel)
 			.icon(icon)
