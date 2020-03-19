@@ -64,7 +64,7 @@ public class BankValuePlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.BANK))
+		if (event.getContainerId() != InventoryID.BANK.getId())
 		{
 			return;
 		}
