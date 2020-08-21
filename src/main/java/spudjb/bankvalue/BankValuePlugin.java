@@ -72,9 +72,13 @@ public class BankValuePlugin extends Plugin
 		final List<CachedItem> cachedItems = new ArrayList<>(event.getItemContainer().getItems().length);
 		for (Item item : event.getItemContainer().getItems())
 		{
+			if (itemManager.canonicalize(item.getId()) != item.getId() || item.getId() == -1)
+			{
+				continue;
+			}
 			int itemPrice = itemManager.getItemPrice(item.getId());
 			ItemComposition itemDefinition = client.getItemDefinition(item.getId());
-			
+
 			cachedItems.add(new CachedItem(item.getId(), item.getQuantity(), itemDefinition.getName(), itemPrice));
 		}
 
