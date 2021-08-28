@@ -28,12 +28,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -56,6 +56,9 @@ class BankValuePanel extends PluginPanel
 	private ArrayList<BankValueTableRow> rows = new ArrayList<>();
 	private BankValuePlugin plugin;
 
+	private String filterString = "";
+	private List<CachedItem> cachedItems;
+
 	BankValuePanel(BankValuePlugin plugin)
 	{
 		this.plugin = plugin;
@@ -66,7 +69,9 @@ class BankValuePanel extends PluginPanel
 		JPanel headerContainer = buildHeader();
 
 		listContainer.setLayout(new GridLayout(0, 1));
+		JPanel filterBox = buildFilterBox();
 
+		add(filterBox);
 		add(headerContainer);
 		add(listContainer);
 	}
@@ -101,18 +106,24 @@ class BankValuePanel extends PluginPanel
 		listContainer.repaint();
 	}
 
-	void populate(List<CachedItem> items)
+	void populate()
 	{
 		rows.clear();
 
-		for (int i = 0; i < items.size(); i++)
+		for (int i = 0; i < cachedItems.size(); i++)
 		{
-			CachedItem item = items.get(i);
+			CachedItem item = cachedItems.get(i);
 
-			rows.add(buildRow(item, i % 2 == 0));
+			if (item.getName().toLowerCase().contains(filterString.toLowerCase()))
+				rows.add(buildRow(item, i % 2 == 0));
 		}
 
 		updateList();
+	}
+
+	void setItems(List<CachedItem> items)
+	{
+		this.cachedItems = items;
 	}
 
 	private void orderBy(SortOrder order)
@@ -179,7 +190,7 @@ class BankValuePanel extends PluginPanel
 		});
 
 		valueHeader = new BankValueTableHeader("$", orderIndex == SortOrder.VALUE, ascendingOrder);
-		valueHeader.setPreferredSize(new Dimension(BankValueTableRow. ITEM_VALUE_COLUMN_WIDTH, 0));
+		valueHeader.setPreferredSize(new Dimension(BankValueTableRow.ITEM_VALUE_COLUMN_WIDTH, 0));
 		valueHeader.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -203,6 +214,36 @@ class BankValuePanel extends PluginPanel
 		header.add(rightSide, BorderLayout.EAST);
 
 		return header;
+	}
+
+	private JPanel buildFilterBox()
+	{
+		BorderLayout layout = new BorderLayout(1, 1);
+		JPanel filterPanel = new JPanel(layout);
+
+		final JLabel uiLabel = new JLabel("Search");
+		final JTextField uiInput = new JTextField();
+
+		uiInput.addKeyListener(new java.awt.event.KeyListener()
+		{
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+				filterString = uiInput.getText();
+				populate();
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {}
+
+			@Override
+			public void keyReleased(KeyEvent e) {}
+		});
+
+		filterPanel.add(uiLabel, BorderLayout.LINE_START);
+		filterPanel.add(uiInput, BorderLayout.CENTER);
+
+		return filterPanel;
 	}
 
 	/**

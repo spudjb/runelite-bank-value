@@ -83,6 +83,9 @@ public class BankValuePlugin extends Plugin
 		}
 
 
-		SwingUtilities.invokeLater(() -> panel.populate(cachedItems));
+		SwingUtilities.invokeLater(() -> {
+			panel.setItems(cachedItems);
+			panel.populate();
+		});
 	}
 }
