@@ -82,7 +82,6 @@ public class BankValuePlugin extends Plugin
 			cachedItems.add(new CachedItem(item.getId(), item.getQuantity(), itemDefinition.getName(), itemPrice));
 		}
 
-
 		SwingUtilities.invokeLater(() -> {
 			panel.setItems(cachedItems);
 			panel.populate();

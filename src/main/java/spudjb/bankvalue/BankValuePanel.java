@@ -33,7 +33,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -115,7 +118,9 @@ class BankValuePanel extends PluginPanel
 			CachedItem item = cachedItems.get(i);
 
 			if (item.getName().toLowerCase().contains(filterString.toLowerCase()))
+			{
 				rows.add(buildRow(item, i % 2 == 0));
+			}
 		}
 
 		updateList();
@@ -234,10 +239,14 @@ class BankValuePanel extends PluginPanel
 			}
 
 			@Override
-			public void keyPressed(KeyEvent e) {}
+			public void keyPressed(KeyEvent e)
+			{
+			}
 
 			@Override
-			public void keyReleased(KeyEvent e) {}
+			public void keyReleased(KeyEvent e)
+			{
+			}
 		});
 
 		filterPanel.add(uiLabel, BorderLayout.LINE_START);
