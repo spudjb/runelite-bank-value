@@ -33,6 +33,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -41,6 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.util.QuantityFormatter;
 
 @Slf4j
 class BankValuePanel extends PluginPanel
@@ -60,7 +63,9 @@ class BankValuePanel extends PluginPanel
 	private BankValuePlugin plugin;
 
 	private String filterString = "";
-	private List<CachedItem> cachedItems;
+	private List<CachedItem> cachedItems = new ArrayList<>();
+	private JLabel bankValueLabel;
+	private final JPanel totalValuePanel;
 
 	BankValuePanel(BankValuePlugin plugin)
 	{
@@ -72,9 +77,12 @@ class BankValuePanel extends PluginPanel
 		JPanel headerContainer = buildHeader();
 
 		listContainer.setLayout(new GridLayout(0, 1));
-		JPanel filterBox = buildFilterBox();
 
-		add(filterBox);
+		totalValuePanel = buildTotalValueBox();
+		updateBankTotal();
+
+		add(totalValuePanel);
+		add(buildFilterBox());
 		add(headerContainer);
 		add(listContainer);
 	}
@@ -129,6 +137,7 @@ class BankValuePanel extends PluginPanel
 	void setItems(List<CachedItem> items)
 	{
 		this.cachedItems = items;
+		updateBankTotal();
 	}
 
 	private void orderBy(SortOrder order)
@@ -221,12 +230,32 @@ class BankValuePanel extends PluginPanel
 		return header;
 	}
 
+	private JPanel buildTotalValueBox() {
+		BorderLayout layout = new BorderLayout(1, 1);
+		JPanel totalValuePanel = new JPanel(layout);
+		totalValuePanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+		bankValueLabel = new JLabel("Bank value: Not loaded");
+		totalValuePanel.add(bankValueLabel, BorderLayout.LINE_START);
+
+		return totalValuePanel;
+	}
+
+	private void updateBankTotal() {
+		int value = cachedItems.stream().map(item -> item.getValue() * item.getQuantity()).mapToInt(Integer::intValue).sum();
+
+		String valueString = value > 0 ? QuantityFormatter.quantityToStackSize(value) : "Not loaded";
+		bankValueLabel.setText(String.format("Bank value: %s", valueString));
+		totalValuePanel.repaint();
+	}
+
 	private JPanel buildFilterBox()
 	{
 		BorderLayout layout = new BorderLayout(1, 1);
 		JPanel filterPanel = new JPanel(layout);
+		filterPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-		final JLabel uiLabel = new JLabel("Search");
+		final JLabel uiLabel = new JLabel("Search: ");
 		final JTextField uiInput = new JTextField();
 
 		uiInput.addKeyListener(new java.awt.event.KeyListener()
