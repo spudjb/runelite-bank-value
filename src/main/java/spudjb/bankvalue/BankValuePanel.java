@@ -82,7 +82,7 @@ class BankValuePanel extends PluginPanel
 				case COUNT:
 					return Integer.compare(r1.getItemCount(), r2.getItemCount()) * (ascendingOrder ? 1 : -1);
 				case VALUE:
-					return Integer.compare(r1.getPrice(), r2.getPrice()) * (ascendingOrder ? 1 : -1);
+					return Long.compare(r1.getPrice(), r2.getPrice()) * (ascendingOrder ? 1 : -1);
 				default:
 					return 0;
 			}

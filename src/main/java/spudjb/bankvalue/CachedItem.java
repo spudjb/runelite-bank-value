@@ -8,5 +8,5 @@ public class CachedItem
 	int id;
 	int quantity;
 	String name;
-	int value;
+	long value;
 }
