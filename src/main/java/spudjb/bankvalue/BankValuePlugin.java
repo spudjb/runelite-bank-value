@@ -76,7 +76,7 @@ public class BankValuePlugin extends Plugin
 			{
 				continue;
 			}
-			int itemPrice = itemManager.getItemPrice(item.getId());
+			long itemPrice = itemManager.getItemPrice(item.getId());
 			ItemComposition itemDefinition = client.getItemDefinition(item.getId());
 
 			cachedItems.add(new CachedItem(item.getId(), item.getQuantity(), itemDefinition.getName(), itemPrice));

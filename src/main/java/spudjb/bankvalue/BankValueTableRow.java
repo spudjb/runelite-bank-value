@@ -178,7 +178,7 @@ class BankValueTableRow extends JPanel
 		return column;
 	}
 
-	int getPrice() {
+	long getPrice() {
 		return item.getValue() * item.getQuantity();
 	}
 
