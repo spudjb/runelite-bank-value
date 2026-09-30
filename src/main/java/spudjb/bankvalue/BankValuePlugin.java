@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+
+import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -35,13 +38,21 @@ public class BankValuePlugin extends Plugin
 	@Inject
 	ItemManager itemManager;
 
+	@Inject
+	ConfigManager configManager;
+
+	@Inject
+	private BankValueConfig config;
+
 	private BankValuePanel panel;
 	private NavigationButton navButton;
+
+	public List<CachedItem> cachedItems;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		panel = new BankValuePanel(this);
+		panel = new BankValuePanel(this, config, configManager);
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(BankValuePlugin.class, "panel_icon.png");
 
@@ -69,7 +80,7 @@ public class BankValuePlugin extends Plugin
 			return;
 		}
 
-		final List<CachedItem> cachedItems = new ArrayList<>(event.getItemContainer().getItems().length);
+		cachedItems = new ArrayList<>(event.getItemContainer().getItems().length);
 		for (Item item : event.getItemContainer().getItems())
 		{
 			if (itemManager.canonicalize(item.getId()) != item.getId() || item.getId() == -1)
@@ -82,7 +93,12 @@ public class BankValuePlugin extends Plugin
 			cachedItems.add(new CachedItem(item.getId(), item.getQuantity(), itemDefinition.getName(), itemPrice));
 		}
 
-
 		SwingUtilities.invokeLater(() -> panel.populate(cachedItems));
+	}
+
+	@Provides
+	BankValueConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(BankValueConfig.class);
 	}
 }
